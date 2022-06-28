@@ -3,6 +3,7 @@ import { ToastContainer } from 'react-toastify';
 import { Box } from 'styleConfig/Box';
 import { Component } from 'react';
 import { fetchImages } from 'services/pixabay-api';
+import { ImageGallery } from './ImageGallery/ImageGallery';
 
 const Status = {
   IDLE: 'idle',
@@ -44,9 +45,16 @@ export class App extends Component {
   };
 
   render() {
+    const { status, images } = this.state;
+
     return (
       <Box display="grid" gridTemplateColumns="1fr" gridGap="16px" pb="24px">
         <Searchbar onSubmit={this.handleFormSubmit} />
+
+        {status === 'idle' && <div>Make your choice</div>}
+        {status === 'pending' && <div>Loading...</div>}
+        {status === 'resolved' && <ImageGallery images={images} />}
+        {status === 'rejected' && <p>Error</p>}
         <ToastContainer autoClose={3000} />
       </Box>
     );
