@@ -1,6 +1,14 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import { Header } from './Searchbar.styled';
+import { MdOutlineSearch } from 'react-icons/md';
+import {
+  Header,
+  Input,
+  Label,
+  SearchButton,
+  SearchForm,
+} from './Searchbar.styled';
 
 export class Searchbar extends Component {
   state = {
@@ -24,20 +32,26 @@ export class Searchbar extends Component {
   render() {
     return (
       <Header>
-        <form class="form">
-          <button type="submit" class="button">
-            <span class="button-label">Search</span>
-          </button>
+        <SearchForm onSubmit={this.handleSubmit}>
+          <SearchButton type="submit">
+            <MdOutlineSearch size={22} />
+            <Label>Search</Label>
+          </SearchButton>
 
-          <input
-            class="input"
+          <Input
+            onChange={this.handleChange}
+            name="searchQuery"
             type="text"
             autocomplete="off"
-            autofocus
+            autoFocus
             placeholder="Search images and photos"
           />
-        </form>
+        </SearchForm>
       </Header>
     );
   }
 }
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

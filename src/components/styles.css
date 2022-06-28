@@ -29,12 +29,12 @@ img {
 /*
  * Стили компонента App
  */
-.App {
+/* .App {
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 16px;
   padding-bottom: 24px;
-}
+} */
 
 /*
  * Стили компонента Searchbar
@@ -61,7 +61,7 @@ img {
 /*
  * Стили компонента SearchForm
  */
-.SearchForm {
+/* .SearchForm {
   display: flex;
   align-items: center;
   width: 100%;
@@ -69,9 +69,9 @@ img {
   background-color: #fff;
   border-radius: 3px;
   overflow: hidden;
-}
+} */
 
-.SearchForm-button {
+/* .SearchForm-button {
   display: inline-block;
   width: 48px;
   height: 48px;
@@ -88,9 +88,9 @@ img {
 
 .SearchForm-button:hover {
   opacity: 1;
-}
+} */
 
-.SearchForm-button-label {
+/* .SearchForm-button-label {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -100,8 +100,8 @@ img {
   white-space: nowrap;
   clip-path: inset(50%);
   border: 0;
-}
-
+} */
+/* 
 .SearchForm-input {
   display: inline-block;
   width: 100%;
@@ -116,12 +116,12 @@ img {
 .SearchForm-input::placeholder {
   font: inherit;
   font-size: 18px;
-}
+} */
 
 /*
  * Стили компонента ImageGallery
  */
-.ImageGallery {
+/* .ImageGallery {
   display: grid;
   max-width: calc(100vw - 48px);
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -132,7 +132,7 @@ img {
   list-style: none;
   margin-left: auto;
   margin-right: auto;
-}
+} */
 
 /*
  * Стили компонента ImageGalleryItem
