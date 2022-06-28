@@ -5,6 +5,7 @@ import { Component } from 'react';
 import { fetchImages } from 'services/pixabay-api';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Loader } from './Loader/Loader';
+import { LoadMoreButton } from './Button/Button';
 // import { Modal } from './Modal/Modal';
 
 const Status = {
@@ -59,6 +60,7 @@ export class App extends Component {
         {status === 'rejected' && <p>Error</p>}
         <ToastContainer autoClose={3000} />
         {/* <Modal></Modal> */}
+        <LoadMoreButton />
       </Box>
     );
   }
