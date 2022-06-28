@@ -1,16 +1,12 @@
+import { Searchbar } from './Searchbar/Searchbar';
+import { ToastContainer } from 'react-toastify';
+import { Box } from 'styleConfig/Box';
+
 export const App = () => {
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
+    <Box display="grid" gridTemplateColumns="1fr" gridGap="16px" pb="24px">
+      <Searchbar />
+      <ToastContainer autoClose={3000} />
+    </Box>
   );
 };
