@@ -4,7 +4,8 @@ import { Box } from 'styleConfig/Box';
 import { Component } from 'react';
 import { fetchImages } from 'services/pixabay-api';
 import { ImageGallery } from './ImageGallery/ImageGallery';
-import { Modal } from './Modal/Modal';
+import { Loader } from './Loader/Loader';
+// import { Modal } from './Modal/Modal';
 
 const Status = {
   IDLE: 'idle',
@@ -37,7 +38,7 @@ export class App extends Component {
             this.setState({ images, status: Status.RESOLVED });
           })
           .catch(error => this.setState({ error, status: Status.REJECTED }));
-      }, 3000);
+      }, 2000);
     }
   }
 
@@ -53,7 +54,7 @@ export class App extends Component {
         <Searchbar onSubmit={this.handleFormSubmit} />
 
         {status === 'idle' && <div>Make your choice</div>}
-        {status === 'pending' && <div>Loading...</div>}
+        {status === 'pending' && <Loader />}
         {status === 'resolved' && <ImageGallery images={images} />}
         {status === 'rejected' && <p>Error</p>}
         <ToastContainer autoClose={3000} />
