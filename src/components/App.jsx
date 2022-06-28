@@ -4,6 +4,7 @@ import { Box } from 'styleConfig/Box';
 import { Component } from 'react';
 import { fetchImages } from 'services/pixabay-api';
 import { ImageGallery } from './ImageGallery/ImageGallery';
+import { Modal } from './Modal/Modal';
 
 const Status = {
   IDLE: 'idle',
@@ -56,6 +57,7 @@ export class App extends Component {
         {status === 'resolved' && <ImageGallery images={images} />}
         {status === 'rejected' && <p>Error</p>}
         <ToastContainer autoClose={3000} />
+        {/* <Modal></Modal> */}
       </Box>
     );
   }
