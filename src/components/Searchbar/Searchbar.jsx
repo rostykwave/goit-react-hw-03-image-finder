@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import { MdOutlineSearch } from 'react-icons/md';
+// import { MdOutlineSearch } from 'react-icons/md';
 import {
   Header,
   Input,
@@ -34,7 +34,7 @@ export class Searchbar extends Component {
       <Header>
         <SearchForm onSubmit={this.handleSubmit}>
           <SearchButton type="submit">
-            <MdOutlineSearch size={22} />
+            {/* <MdOutlineSearch size={22} /> */}
             <Label>Search</Label>
           </SearchButton>
 

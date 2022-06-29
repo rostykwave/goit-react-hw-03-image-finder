@@ -1,11 +1,11 @@
-import { Searchbar } from './Searchbar/Searchbar';
+import { Searchbar } from './components/Searchbar/Searchbar';
 import { ToastContainer } from 'react-toastify';
 import { Box } from 'styleConfig/Box';
 import { Component } from 'react';
 import { fetchImages } from 'services/pixabay-api';
-import { ImageGallery } from './ImageGallery/ImageGallery';
-import { Loader } from './Loader/Loader';
-import { LoadMoreButton } from './Button/Button';
+import { ImageGallery } from './components/ImageGallery/ImageGallery';
+import { Loader } from './components/Loader/Loader';
+import { LoadMoreButton } from './components/Button/Button';
 // import { Modal } from './Modal/Modal';
 
 const Status = {
