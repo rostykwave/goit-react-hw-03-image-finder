@@ -51,11 +51,22 @@ export class App extends Component {
         const images = data.hits;
 
         if (images.length > 0) {
-          this.setState({ images, status: Status.RESOLVED });
+          this.setState(prevState => {
+            return {
+              images: [...prevState.images, ...images],
+              status: Status.RESOLVED,
+              page: prevState.page + 1,
+            };
+          });
         } else {
           console.log('no images');
           this.setState({ images, status: Status.REJECTED });
         }
+
+        // window.scrollTo({
+        //   top: document.documentElement.scrollHeight - 670,
+        //   behavior: 'smooth',
+        // });
       })
       .catch(error => this.setState({ error, status: Status.REJECTED }));
   };
@@ -91,21 +102,25 @@ export class App extends Component {
 
         {status === 'idle' && <div>Make your choice</div>}
         {status === 'pending' && <Loader />}
+
         {status === 'resolved' && (
-          <ImageGallery
-            images={images}
-            handlerModalOpen={this.handlerModalOpen}
-          />
+          <>
+            <ImageGallery
+              images={images}
+              handlerModalOpen={this.handlerModalOpen}
+            />
+            <LoadMoreButton onClick={this.fetchImages} />
+          </>
         )}
+
         {status === 'rejected' && <p>Error</p>}
         <ToastContainer autoClose={3000} />
-        {/* <Modal></Modal> */}
+
         {largeImage.src && (
           <Modal onClose={this.handlerModalClose}>
             <img src={largeImage.src} alt={largeImage.alt} />
           </Modal>
         )}
-        <LoadMoreButton />
       </Box>
     );
   }
