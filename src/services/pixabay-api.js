@@ -4,10 +4,9 @@ const IMAGE_TYPE = 'photo';
 const ORIENTATION = 'horizontal';
 const SAFE_SEARCH = 'true';
 const PER_PAGE = 12;
-const PAGE = 1;
 
-export function fetchImages(searchQuery) {
-  const url = `${BASE_URL}?key=${KEY}&q=${searchQuery}&image_type=${IMAGE_TYPE}&orientation=${ORIENTATION}&safesearch=${SAFE_SEARCH}&page=${PAGE}&per_page=${PER_PAGE}`;
+export function fetchImagesAPI(searchQuery, page) {
+  const url = `${BASE_URL}?key=${KEY}&q=${searchQuery}&image_type=${IMAGE_TYPE}&orientation=${ORIENTATION}&safesearch=${SAFE_SEARCH}&page=${page}&per_page=${PER_PAGE}`;
 
   return fetch(url).then(response => {
     if (response.ok) {

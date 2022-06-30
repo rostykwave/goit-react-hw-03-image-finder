@@ -2,7 +2,7 @@ import { Searchbar } from './components/Searchbar/Searchbar';
 import { ToastContainer } from 'react-toastify';
 import { Box } from 'styleConfig/Box';
 import { Component } from 'react';
-import { fetchImages } from 'services/pixabay-api';
+import { fetchImagesAPI } from 'services/pixabay-api';
 import { ImageGallery } from './components/ImageGallery/ImageGallery';
 import { Loader } from 'components/Loader/Loader';
 import { LoadMoreButton } from './components/Button/Button';
@@ -18,6 +18,7 @@ const Status = {
 export class App extends Component {
   state = {
     searchQuery: '',
+    page: 1,
     images: [],
     error: null,
     status: Status.IDLE,
@@ -35,23 +36,29 @@ export class App extends Component {
       this.setState({ status: Status.PENDING });
 
       setTimeout(() => {
-        fetchImages(this.state.searchQuery)
-          .then(data => {
-            console.log(data);
-
-            const images = data.hits;
-
-            if (images.length > 0) {
-              this.setState({ images, status: Status.RESOLVED });
-            } else {
-              console.log('no images');
-              this.setState({ images, status: Status.REJECTED });
-            }
-          })
-          .catch(error => this.setState({ error, status: Status.REJECTED }));
+        this.fetchImages();
       }, 1000);
     }
   }
+
+  fetchImages = () => {
+    const { searchQuery, page } = this.state;
+
+    fetchImagesAPI(searchQuery, page)
+      .then(data => {
+        console.log(data);
+
+        const images = data.hits;
+
+        if (images.length > 0) {
+          this.setState({ images, status: Status.RESOLVED });
+        } else {
+          console.log('no images');
+          this.setState({ images, status: Status.REJECTED });
+        }
+      })
+      .catch(error => this.setState({ error, status: Status.REJECTED }));
+  };
 
   handleFormSubmit = searchQuery => {
     this.setState({ searchQuery });
