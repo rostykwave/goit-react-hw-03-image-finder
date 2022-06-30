@@ -37,10 +37,6 @@ export class App extends Component {
     if (prevQuery !== nextQuery) {
       this.setState({ status: Status.PENDING, page: 1, images: [] });
 
-      // setTimeout(() => {
-      //   this.fetchImages();
-      // }, 1000);
-
       this.fetchImages();
     }
   }
@@ -72,11 +68,6 @@ export class App extends Component {
           console.log('no images');
           this.setState({ images, status: Status.REJECTED });
         }
-
-        // window.scrollTo({
-        //   top: document.documentElement.scrollHeight - 670,
-        //   behavior: 'smooth',
-        // });
       })
       .catch(error => this.setState({ error, status: Status.REJECTED }));
   };
