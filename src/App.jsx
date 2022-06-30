@@ -20,6 +20,7 @@ export class App extends Component {
   state = {
     searchQuery: '',
     page: 1,
+    leftPages: 0,
     images: [],
     error: null,
     status: Status.IDLE,
@@ -36,27 +37,35 @@ export class App extends Component {
     if (prevQuery !== nextQuery) {
       this.setState({ status: Status.PENDING, page: 1, images: [] });
 
-      setTimeout(() => {
-        this.fetchImages();
-      }, 1000);
+      // setTimeout(() => {
+      //   this.fetchImages();
+      // }, 1000);
+
+      this.fetchImages();
     }
   }
 
   fetchImages = () => {
+    const perPage = 12;
     const { searchQuery, page } = this.state;
+    this.setState({ status: Status.PENDING });
 
-    fetchImagesAPI(searchQuery, page)
+    fetchImagesAPI(searchQuery, page, perPage)
       .then(data => {
         console.log(data);
 
         const images = data.hits;
+        const totalHits = data.totalHits;
 
         if (images.length > 0) {
+          const leftPages = Math.ceil(totalHits / perPage) - page;
+
           this.setState(prevState => {
             return {
               images: [...prevState.images, ...images],
               status: Status.RESOLVED,
               page: prevState.page + 1,
+              leftPages,
             };
           });
         } else {
@@ -95,23 +104,23 @@ export class App extends Component {
   };
 
   render() {
-    const { status, images, largeImage } = this.state;
+    const { status, images, largeImage, leftPages } = this.state;
 
     return (
       <Box display="grid" gridTemplateColumns="1fr" gridGap="16px" pb="24px">
         <Searchbar onSubmit={this.handleFormSubmit} />
+        {images.length > 0 && (
+          <ImageGallery
+            images={images}
+            handlerModalOpen={this.handlerModalOpen}
+          />
+        )}
 
         {status === 'idle' && <div>Make your choice</div>}
         {status === 'pending' && <Loader />}
 
-        {status === 'resolved' && (
-          <>
-            <ImageGallery
-              images={images}
-              handlerModalOpen={this.handlerModalOpen}
-            />
-            <LoadMoreButton onClick={this.fetchImages} />
-          </>
+        {status === 'resolved' && leftPages && (
+          <LoadMoreButton onClick={this.fetchImages} />
         )}
 
         {status === 'rejected' && <p>Error</p>}
