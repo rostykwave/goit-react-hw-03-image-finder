@@ -1,5 +1,6 @@
 import { Searchbar } from './components/Searchbar/Searchbar';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Box } from 'styleConfig/Box';
 import { Component } from 'react';
 import { fetchImagesAPI } from 'services/pixabay-api';
