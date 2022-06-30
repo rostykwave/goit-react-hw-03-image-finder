@@ -18,7 +18,7 @@ const Status = {
 export class App extends Component {
   state = {
     searchQuery: '',
-    images: null,
+    images: [],
     error: null,
     status: Status.IDLE,
     largeImage: {
@@ -40,7 +40,13 @@ export class App extends Component {
             console.log(data);
 
             const images = data.hits;
-            this.setState({ images, status: Status.RESOLVED });
+
+            if (images.length > 0) {
+              this.setState({ images, status: Status.RESOLVED });
+            } else {
+              console.log('no images');
+              this.setState({ images, status: Status.REJECTED });
+            }
           })
           .catch(error => this.setState({ error, status: Status.REJECTED }));
       }, 1000);
@@ -51,14 +57,14 @@ export class App extends Component {
     this.setState({ searchQuery });
   };
 
-  handlerModalOpen = (largeImageURL, tags)=>{
+  handlerModalOpen = (largeImageURL, tags) => {
     this.setState({
       largeImage: {
         src: largeImageURL,
         alt: tags,
       },
     });
-  }
+  };
 
   handlerModalClose = () => {
     this.setState({
@@ -78,7 +84,12 @@ export class App extends Component {
 
         {status === 'idle' && <div>Make your choice</div>}
         {status === 'pending' && <Loader />}
-        {status === 'resolved' && <ImageGallery images={images} handlerModalOpen={this.handlerModalOpen}/>}
+        {status === 'resolved' && (
+          <ImageGallery
+            images={images}
+            handlerModalOpen={this.handlerModalOpen}
+          />
+        )}
         {status === 'rejected' && <p>Error</p>}
         <ToastContainer autoClose={3000} />
         {/* <Modal></Modal> */}
