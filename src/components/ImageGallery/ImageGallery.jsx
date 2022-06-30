@@ -2,7 +2,7 @@ import { ImageGalleryItem } from 'components/ImageGallery/ImageGalleryItem';
 import { GalleryList } from './ImageGallery.styled';
 import PropTypes from 'prop-types';
 
-export const ImageGallery = ({ images }) => {
+export const ImageGallery = ({ images, handlerModalOpen }) => {
   return (
     <GalleryList>
       {images &&
@@ -10,9 +10,10 @@ export const ImageGallery = ({ images }) => {
           <ImageGalleryItem
             key={id}
             id={id}
-            tags={tags}
+            imageAlt={tags}
             webformatURL={webformatURL}
             largeImageURL={largeImageURL}
+            handlerModalOpen={handlerModalOpen}
           />
         ))}
     </GalleryList>
@@ -28,4 +29,5 @@ ImageGallery.propTypes = {
       largeImageURL: PropTypes.string.isRequired,
     })
   ),
+  handlerModalOpen: PropTypes.func.isRequired,
 };

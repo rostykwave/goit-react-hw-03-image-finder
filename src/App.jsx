@@ -21,10 +21,6 @@ export class App extends Component {
     images: null,
     error: null,
     status: Status.IDLE,
-    // largeImage: {
-    //   src: 'https://pixabay.com/get/g8e8710f5b3e2d93a45c823fd1e5635e3f836cdd23446e97de306c7136b43c7c6f787fe20a1e9c2968ea1e929b5fc5313cc97c22372fc1838a1a9e8dfc56005db_1280.jpg',
-    //   alt: 'tags: winter, sheep, herd',
-    // },
     largeImage: {
       src: '',
       alt: '',
@@ -47,7 +43,7 @@ export class App extends Component {
             this.setState({ images, status: Status.RESOLVED });
           })
           .catch(error => this.setState({ error, status: Status.REJECTED }));
-      }, 2000);
+      }, 1000);
     }
   }
 
@@ -55,7 +51,16 @@ export class App extends Component {
     this.setState({ searchQuery });
   };
 
-  handleModalClose = () => {
+  handlerModalOpen = (largeImageURL, tags)=>{
+    this.setState({
+      largeImage: {
+        src: largeImageURL,
+        alt: tags,
+      },
+    });
+  }
+
+  handlerModalClose = () => {
     this.setState({
       largeImage: {
         src: '',
@@ -73,12 +78,12 @@ export class App extends Component {
 
         {status === 'idle' && <div>Make your choice</div>}
         {status === 'pending' && <Loader />}
-        {status === 'resolved' && <ImageGallery images={images} />}
+        {status === 'resolved' && <ImageGallery images={images} handlerModalOpen={this.handlerModalOpen}/>}
         {status === 'rejected' && <p>Error</p>}
         <ToastContainer autoClose={3000} />
         {/* <Modal></Modal> */}
         {largeImage.src && (
-          <Modal onClose={this.handleModalClose}>
+          <Modal onClose={this.handlerModalClose}>
             <img src={largeImage.src} alt={largeImage.alt} />
           </Modal>
         )}

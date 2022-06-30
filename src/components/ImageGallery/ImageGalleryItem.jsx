@@ -1,16 +1,21 @@
 import { Item, Image } from 'components/ImageGallery/ImageGallery.styled';
 import PropTypes from 'prop-types';
 
-export const ImageGalleryItem = ({ id, webformatURL, largeImageURL, tags }) => {
+export const ImageGalleryItem = ({ webformatURL, largeImageURL, imageAlt, handlerModalOpen }) => {
+  const onGalleryItemClick = () => {
+    handlerModalOpen(largeImageURL, imageAlt)
+  }
+
   return (
-    <Item id={id}>
-      <Image src={webformatURL} alt={tags} />
+    <Item onClick={onGalleryItemClick}>
+      <Image src={webformatURL} alt={imageAlt} />
     </Item>
   );
 };
 
 ImageGalleryItem.propTypes = {
-  tags: PropTypes.string.isRequired,
   webformatURL: PropTypes.string.isRequired,
   largeImageURL: PropTypes.string.isRequired,
+  imageAlt: PropTypes.string.isRequired,
+  handlerModalOpen: PropTypes.func.isRequired,
 };
