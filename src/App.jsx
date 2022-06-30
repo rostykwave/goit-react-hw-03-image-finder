@@ -33,7 +33,7 @@ export class App extends Component {
     const nextQuery = this.state.searchQuery;
 
     if (prevQuery !== nextQuery) {
-      this.setState({ status: Status.PENDING });
+      this.setState({ status: Status.PENDING, page: 1, images: [] });
 
       setTimeout(() => {
         this.fetchImages();
