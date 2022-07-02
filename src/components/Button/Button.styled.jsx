@@ -3,11 +3,11 @@ import styled from 'styled-components';
 export const Button = styled.button`
   padding: 8px 16px;
   border-radius: 2px;
-  background-color: #3f51b5;
+  background-color: ${p => p.theme.colors.primaryBtnBg};
   transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
   text-align: center;
   display: inline-block;
-  color: #fff;
+  color: ${p => p.theme.colors.primaryBtnText};
   border: 0;
   text-decoration: none;
   cursor: pointer;
@@ -22,6 +22,6 @@ export const Button = styled.button`
 
   :hover,
   :focus {
-    background-color: #303f9f;
+    background-color: ${p => p.theme.colors.primaryBtnBgAccent};
   }
 `;

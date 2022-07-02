@@ -6,7 +6,7 @@ export const Loader = () => {
   return (
     <Box display="flex" justifyContent="center">
       <BallTriangle
-        hcolor="#00BFFF"
+        hcolor={p => p.theme.colors.loader}
         height={80}
         width={80}
         ariaLabel="loading"
