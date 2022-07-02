@@ -31,13 +31,10 @@ export class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    // const prevQuery = prevState.searchQuery;
-    // const nextQuery = this.state.searchQuery;
-
-    if (prevState.searchQuery !== this.state.searchQuery||prevState.page !== this.state.page) {
-      this.setState({ status: Status.PENDING });
-      // this.setState({ status: Status.PENDING, page: 1, images: [] });
-
+    if (
+      prevState.searchQuery !== this.state.searchQuery ||
+      prevState.page !== this.state.page
+    ) {
       this.fetchImages();
     }
   }
@@ -49,35 +46,33 @@ export class App extends Component {
 
     fetchImagesAPI(searchQuery, page, perPage)
       .then(data => {
-        console.log(data);
-
+        // console.log(data);
         const images = data.hits;
-        const totalHits = data.totalHits;
 
-        if (images.length > 0) {
-          const leftPages = Math.ceil(totalHits / perPage) - page;
-
-          this.setState(prevState => {
-            return {
-              images: [...prevState.images, ...images],
-              status: Status.RESOLVED,
-              page: prevState.page + 1,
-              leftPages,
-            };
-          });
-        } else {
-          console.log('no images');
-          this.setState({ images, status: Status.REJECTED });
+        if (images.length === 0) {
+          throw Error('There is no images found on this search result');
         }
+        const totalHits = data.totalHits;
+        const leftPages = Math.ceil(totalHits / perPage) - page;
+
+        this.setState(prevState => {
+          return {
+            images: [...prevState.images, ...images],
+            status: Status.RESOLVED,
+            leftPages,
+          };
+        });
       })
       .catch(error => this.setState({ error, status: Status.REJECTED }));
   };
 
   handleFormSubmit = searchQuery => {
-    this.setState({ searchQuery, page:1, images:[] });
+    if (searchQuery !== this.state.searchQuery) {
+      this.setState({ searchQuery, page: 1, images: [] });
+    }
   };
 
-  handlerModalOpen = (largeImageURL, tags) => {
+  handleModalOpen = (largeImageURL, tags) => {
     this.setState({
       largeImage: {
         src: largeImageURL,
@@ -86,7 +81,7 @@ export class App extends Component {
     });
   };
 
-  handlerModalClose = () => {
+  handleModalClose = () => {
     this.setState({
       largeImage: {
         src: '',
@@ -95,9 +90,9 @@ export class App extends Component {
     });
   };
 
-  loadMore=()=>{
-    this.setState(state=>({page:state.page+1}))
-  }
+  loadMore = () => {
+    this.setState(state => ({ page: state.page + 1 }));
+  };
 
   render() {
     const { status, images, largeImage, leftPages } = this.state;
@@ -108,22 +103,30 @@ export class App extends Component {
         {images.length > 0 && (
           <ImageGallery
             images={images}
-            handlerModalOpen={this.handlerModalOpen}
+            handlerModalOpen={this.handleModalOpen}
           />
         )}
 
-        {status === 'idle' && <div>Make your choice</div>}
+        {status === 'idle' && (
+          <Box textAlign="center" color="#c5c1c1">
+            Your gallery will appear here after search
+          </Box>
+        )}
         {status === 'pending' && <Loader />}
 
         {status === 'resolved' && leftPages && (
           <LoadMoreButton onClick={this.loadMore} />
         )}
 
-        {status === 'rejected' && <p>Error</p>}
+        {status === 'rejected' && (
+          <Box color="red" textAlign="center">
+            {this.state.error.message}
+          </Box>
+        )}
         <ToastContainer autoClose={3000} />
 
         {largeImage.src && (
-          <Modal onClose={this.handlerModalClose}>
+          <Modal onClose={this.handleModalClose}>
             <img src={largeImage.src} alt={largeImage.alt} />
           </Modal>
         )}
