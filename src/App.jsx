@@ -20,10 +20,6 @@ export class App extends Component {
     images: [],
     error: { message: '' },
     status: Status.IDLE,
-    largeImage: {
-      src: '',
-      alt: '',
-    },
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -42,7 +38,7 @@ export class App extends Component {
 
     fetchImagesAPI(searchQuery, page, perPage)
       .then(data => {
-        console.log(data);
+        // console.log(data);
         const images = data.hits;
 
         if (images.length === 0) {
@@ -68,30 +64,12 @@ export class App extends Component {
     }
   };
 
-  handleModalOpen = (largeImageURL, tags) => {
-    this.setState({
-      largeImage: {
-        src: largeImageURL,
-        alt: tags,
-      },
-    });
-  };
-
-  handleModalClose = () => {
-    this.setState({
-      largeImage: {
-        src: '',
-        alt: '',
-      },
-    });
-  };
-
   loadMore = () => {
     this.setState(state => ({ page: state.page + 1 }));
   };
 
   render() {
-    const { status, images, largeImage, leftPages, error } = this.state;
+    const { status, images, leftPages, error } = this.state;
 
     return (
       <Box display="grid" gridTemplateColumns="1fr" gridGap="16px" pb="24px">
@@ -99,11 +77,8 @@ export class App extends Component {
         <ImageGallery
           status={status}
           images={images}
-          largeImage={largeImage}
           leftPages={leftPages}
           error={error}
-          handleModalOpen={this.handleModalOpen}
-          handleModalClose={this.handleModalClose}
           loadMore={this.loadMore}
         />
       </Box>

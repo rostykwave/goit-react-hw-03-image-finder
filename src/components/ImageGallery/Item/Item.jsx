@@ -5,10 +5,10 @@ export const Item = ({
   webformatURL,
   largeImageURL,
   imageAlt,
-  handlerModalOpen,
+  handleModalOpen,
 }) => {
   const onGalleryItemClick = () => {
-    handlerModalOpen(largeImageURL, imageAlt);
+    handleModalOpen(largeImageURL, imageAlt);
   };
 
   return (
@@ -22,5 +22,5 @@ Item.propTypes = {
   webformatURL: PropTypes.string.isRequired,
   largeImageURL: PropTypes.string.isRequired,
   imageAlt: PropTypes.string.isRequired,
-  handlerModalOpen: PropTypes.func.isRequired,
+  handleModalOpen: PropTypes.func.isRequired,
 };

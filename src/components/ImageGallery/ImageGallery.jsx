@@ -5,49 +5,70 @@ import { Modal } from 'components/Modal/Modal';
 import { ToastContainer } from 'react-toastify';
 import { Box } from 'styleConfig/Box';
 import { GalleryList } from './GalleryList/GalleryList';
+import { Component } from 'react';
 
-export const ImageGallery = ({
-  status,
-  images,
-  largeImage,
-  leftPages,
-  error,
-  handleModalOpen,
-  handleModalClose,
-  loadMore,
-}) => {
-  return (
-    <>
-      {images.length > 0 && (
-        <GalleryList images={images} handlerModalOpen={handleModalOpen} />
-      )}
+export class ImageGallery extends Component {
+  state = {
+    largeImage: {
+      src: '',
+      alt: '',
+    },
+    isOpen: false,
+  };
 
-      {status === 'idle' && (
-        <Box textAlign="center" color="#c5c1c1">
-          Your gallery will appear here after search
-        </Box>
-      )}
-      {status === 'pending' && <Loader />}
+  handleModalOpen = (largeImageURL, tags) => {
+    this.setState({
+      isOpen: true,
+      largeImage: {
+        src: largeImageURL,
+        alt: tags,
+      },
+    });
+  };
 
-      {status === 'resolved' && leftPages && (
-        <LoadMoreButton onClick={loadMore} />
-      )}
+  handleModalClose = () => {
+    this.setState({
+      isOpen: false,
+    });
+  };
 
-      {status === 'rejected' && (
-        <Box color="red" textAlign="center">
-          {error.message}
-        </Box>
-      )}
-      <ToastContainer autoClose={3000} />
+  render() {
+    const { status, images, leftPages, error, loadMore } = this.props;
+    const { isOpen, largeImage } = this.state;
 
-      {largeImage.src && (
-        <Modal onClose={handleModalClose}>
-          <img src={largeImage.src} alt={largeImage.alt} />
-        </Modal>
-      )}
-    </>
-  );
-};
+    return (
+      <>
+        {images.length > 0 && (
+          <GalleryList images={images} handleModalOpen={this.handleModalOpen} />
+        )}
+
+        {status === 'idle' && (
+          <Box textAlign="center" color="#c5c1c1">
+            Your gallery will appear here after search
+          </Box>
+        )}
+        {status === 'pending' && <Loader />}
+
+        {status === 'resolved' && leftPages && (
+          <LoadMoreButton onClick={loadMore} />
+        )}
+
+        {status === 'rejected' && (
+          <Box color="red" textAlign="center">
+            {error.message}
+          </Box>
+        )}
+        <ToastContainer autoClose={3000} />
+
+        {isOpen && (
+          <Modal onClose={this.handleModalClose}>
+            <img src={largeImage.src} alt={largeImage.alt} />
+          </Modal>
+        )}
+      </>
+    );
+  }
+}
 
 ImageGallery.propTypes = {
   status: PropTypes.string.isRequired,
@@ -59,10 +80,7 @@ ImageGallery.propTypes = {
       largeImageURL: PropTypes.string.isRequired,
     })
   ),
-  largeImage: PropTypes.object.isRequired,
   leftPages: PropTypes.number.isRequired,
   error: PropTypes.PropTypes.object.isRequired,
-  handleModalOpen: PropTypes.func.isRequired,
-  handleModalClose: PropTypes.func.isRequired,
   loadMore: PropTypes.func.isRequired,
 };
