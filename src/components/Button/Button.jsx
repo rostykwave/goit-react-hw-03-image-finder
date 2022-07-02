@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 export const Button = styled.button`
-  padding: 8px 16px;
+  padding: ${p => p.theme.space[3]}px ${p => p.theme.space[4]}px;
   border-radius: 2px;
   background-color: ${p => p.theme.colors.primaryBtnBg};
   transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -13,7 +13,7 @@ export const Button = styled.button`
   text-decoration: none;
   cursor: pointer;
   font-family: inherit;
-  font-size: 18px;
+  font-size: ${p => p.theme.fontSizes.m};
   line-height: 24px;
   font-style: normal;
   font-weight: 500;

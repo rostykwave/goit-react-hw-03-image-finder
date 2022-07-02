@@ -1,6 +1,7 @@
 export const theme = Object.freeze({
   colors: {
     header: '#3f51b5',
+    headerText: '#fff',
     SearchField: '#fff',
     primaryBtnText: '#fff',
     primaryBtnBg: '#3f51b5',
@@ -12,8 +13,8 @@ export const theme = Object.freeze({
   fontSizes: {
     xs: '12px',
     s: '14px',
-    m: '16px',
-    l: '28px',
+    m: '18px',
+    l: '24px',
     xl: '48px',
     xxl: '64px',
   },
