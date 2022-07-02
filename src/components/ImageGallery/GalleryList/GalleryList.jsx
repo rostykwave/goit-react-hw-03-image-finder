@@ -1,10 +1,10 @@
 import { Item } from 'components/ImageGallery/Item/Item';
 import PropTypes from 'prop-types';
-import { StyledGalleryList } from './GalleryList.styled';
+import { StyledList } from './GalleryList.styled';
 
 export const GalleryList = ({ images, handleModalOpen }) => {
   return (
-    <StyledGalleryList>
+    <StyledList>
       {images &&
         images.map(({ id, webformatURL, largeImageURL, tags }) => (
           <Item
@@ -16,7 +16,7 @@ export const GalleryList = ({ images, handleModalOpen }) => {
             handleModalOpen={handleModalOpen}
           />
         ))}
-    </StyledGalleryList>
+    </StyledList>
   );
 };
 

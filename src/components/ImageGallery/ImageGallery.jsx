@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import { LoadMoreButton } from 'components/Button/Button';
 import { Loader } from 'components/Loader/Loader';
 import { Modal } from 'components/Modal/Modal';
 import { ToastContainer } from 'react-toastify';
 import { Box } from 'styleConfig/Box';
 import { GalleryList } from './GalleryList/GalleryList';
 import { Component } from 'react';
+import { Button } from 'components/Button/Button';
 
 export class ImageGallery extends Component {
   state = {
@@ -50,7 +50,9 @@ export class ImageGallery extends Component {
         {status === 'pending' && <Loader />}
 
         {status === 'resolved' && leftPages && (
-          <LoadMoreButton onClick={loadMore} />
+          <Button type="button" onClick={loadMore}>
+            Load more
+          </Button>
         )}
 
         {status === 'rejected' && (
