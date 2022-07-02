@@ -11,22 +11,18 @@ import {
 } from './Searchbar.styled';
 
 export class Searchbar extends Component {
-  state = {
-    searchQuery: '',
-  };
-
-  handleChange = e => {
-    this.setState({ searchQuery: e.currentTarget.value.toLowerCase() });
-  };
-
   handleSubmit = e => {
     e.preventDefault();
 
-    if (this.state.searchQuery.trim() === '') {
-      return toast.error('Enter your query in searchfield');
+    const searchQuery = e.target.elements.searchQuery.value
+      .toLowerCase()
+      .trim();
+
+    if (searchQuery === '') {
+      return toast.error('Enter your query in search field');
     }
 
-    this.props.onSubmit(this.state.searchQuery);
+    this.props.onSubmit(searchQuery);
   };
 
   render() {
@@ -39,7 +35,6 @@ export class Searchbar extends Component {
           </SearchButton>
 
           <Input
-            onChange={this.handleChange}
             name="searchQuery"
             type="text"
             autocomplete="off"
