@@ -31,11 +31,12 @@ export class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const prevQuery = prevState.searchQuery;
-    const nextQuery = this.state.searchQuery;
+    // const prevQuery = prevState.searchQuery;
+    // const nextQuery = this.state.searchQuery;
 
-    if (prevQuery !== nextQuery) {
-      this.setState({ status: Status.PENDING, page: 1, images: [] });
+    if (prevState.searchQuery !== this.state.searchQuery||prevState.page !== this.state.page) {
+      this.setState({ status: Status.PENDING });
+      // this.setState({ status: Status.PENDING, page: 1, images: [] });
 
       this.fetchImages();
     }
@@ -73,7 +74,7 @@ export class App extends Component {
   };
 
   handleFormSubmit = searchQuery => {
-    this.setState({ searchQuery });
+    this.setState({ searchQuery, page:1, images:[] });
   };
 
   handlerModalOpen = (largeImageURL, tags) => {
@@ -94,6 +95,10 @@ export class App extends Component {
     });
   };
 
+  loadMore=()=>{
+    this.setState(state=>({page:state.page+1}))
+  }
+
   render() {
     const { status, images, largeImage, leftPages } = this.state;
 
@@ -111,7 +116,7 @@ export class App extends Component {
         {status === 'pending' && <Loader />}
 
         {status === 'resolved' && leftPages && (
-          <LoadMoreButton onClick={this.fetchImages} />
+          <LoadMoreButton onClick={this.loadMore} />
         )}
 
         {status === 'rejected' && <p>Error</p>}
