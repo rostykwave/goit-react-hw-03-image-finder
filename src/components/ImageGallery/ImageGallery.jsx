@@ -1,26 +1,56 @@
-import { ImageGalleryItem } from 'components/ImageGallery/ImageGalleryItem';
-import { GalleryList } from './ImageGallery.styled';
 import PropTypes from 'prop-types';
+import { LoadMoreButton } from 'components/Button/Button';
+import { Loader } from 'components/Loader/Loader';
+import { Modal } from 'components/Modal/Modal';
+import { ToastContainer } from 'react-toastify';
+import { Box } from 'styleConfig/Box';
+import { GalleryList } from './GalleryList/GalleryList';
 
-export const ImageGallery = ({ images, handlerModalOpen }) => {
+export const ImageGallery = ({
+  status,
+  images,
+  largeImage,
+  leftPages,
+  error,
+  handleModalOpen,
+  handleModalClose,
+  loadMore,
+}) => {
   return (
-    <GalleryList>
-      {images &&
-        images.map(({ id, webformatURL, largeImageURL, tags }) => (
-          <ImageGalleryItem
-            key={id}
-            id={id}
-            imageAlt={tags}
-            webformatURL={webformatURL}
-            largeImageURL={largeImageURL}
-            handlerModalOpen={handlerModalOpen}
-          />
-        ))}
-    </GalleryList>
+    <>
+      {images.length > 0 && (
+        <GalleryList images={images} handlerModalOpen={handleModalOpen} />
+      )}
+
+      {status === 'idle' && (
+        <Box textAlign="center" color="#c5c1c1">
+          Your gallery will appear here after search
+        </Box>
+      )}
+      {status === 'pending' && <Loader />}
+
+      {status === 'resolved' && leftPages && (
+        <LoadMoreButton onClick={loadMore} />
+      )}
+
+      {status === 'rejected' && (
+        <Box color="red" textAlign="center">
+          {error.message}
+        </Box>
+      )}
+      <ToastContainer autoClose={3000} />
+
+      {largeImage.src && (
+        <Modal onClose={handleModalClose}>
+          <img src={largeImage.src} alt={largeImage.alt} />
+        </Modal>
+      )}
+    </>
   );
 };
 
 ImageGallery.propTypes = {
+  status: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -29,5 +59,10 @@ ImageGallery.propTypes = {
       largeImageURL: PropTypes.string.isRequired,
     })
   ),
-  handlerModalOpen: PropTypes.func.isRequired,
+  largeImage: PropTypes.object.isRequired,
+  leftPages: PropTypes.number.isRequired,
+  error: PropTypes.PropTypes.object.isRequired,
+  handleModalOpen: PropTypes.func.isRequired,
+  handleModalClose: PropTypes.func.isRequired,
+  loadMore: PropTypes.func.isRequired,
 };

@@ -1,13 +1,9 @@
 import { Searchbar } from './components/Searchbar/Searchbar';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Box } from 'styleConfig/Box';
 import { Component } from 'react';
 import { fetchImagesAPI } from 'services/pixabay-api';
 import { ImageGallery } from './components/ImageGallery/ImageGallery';
-import { Loader } from 'components/Loader/Loader';
-import { LoadMoreButton } from './components/Button/Button';
-import { Modal } from 'components/Modal/Modal';
 
 const Status = {
   IDLE: 'idle',
@@ -22,7 +18,7 @@ export class App extends Component {
     page: 1,
     leftPages: 0,
     images: [],
-    error: null,
+    error: { message: '' },
     status: Status.IDLE,
     largeImage: {
       src: '',
@@ -46,7 +42,7 @@ export class App extends Component {
 
     fetchImagesAPI(searchQuery, page, perPage)
       .then(data => {
-        // console.log(data);
+        console.log(data);
         const images = data.hits;
 
         if (images.length === 0) {
@@ -95,41 +91,21 @@ export class App extends Component {
   };
 
   render() {
-    const { status, images, largeImage, leftPages } = this.state;
+    const { status, images, largeImage, leftPages, error } = this.state;
 
     return (
       <Box display="grid" gridTemplateColumns="1fr" gridGap="16px" pb="24px">
         <Searchbar onSubmit={this.handleFormSubmit} />
-        {images.length > 0 && (
-          <ImageGallery
-            images={images}
-            handlerModalOpen={this.handleModalOpen}
-          />
-        )}
-
-        {status === 'idle' && (
-          <Box textAlign="center" color="#c5c1c1">
-            Your gallery will appear here after search
-          </Box>
-        )}
-        {status === 'pending' && <Loader />}
-
-        {status === 'resolved' && leftPages && (
-          <LoadMoreButton onClick={this.loadMore} />
-        )}
-
-        {status === 'rejected' && (
-          <Box color="red" textAlign="center">
-            {this.state.error.message}
-          </Box>
-        )}
-        <ToastContainer autoClose={3000} />
-
-        {largeImage.src && (
-          <Modal onClose={this.handleModalClose}>
-            <img src={largeImage.src} alt={largeImage.alt} />
-          </Modal>
-        )}
+        <ImageGallery
+          status={status}
+          images={images}
+          largeImage={largeImage}
+          leftPages={leftPages}
+          error={error}
+          handleModalOpen={this.handleModalOpen}
+          handleModalClose={this.handleModalClose}
+          loadMore={this.loadMore}
+        />
       </Box>
     );
   }
